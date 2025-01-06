@@ -33,6 +33,15 @@ export default function Home({
   }, [router.pathname]);
 
   useEffect(() => {
+    const lastCollapsedState = localStorage.getItem("lastCollapsedState");
+    console.log("lastCollapsedState: ", lastCollapsedState);
+    if(lastCollapsedState !== null) {
+      console.log("not null, setting lastCollapsedState: ", lastCollapsedState);
+      setCollapseSidebar(lastCollapsedState === "true");
+    }
+  }, []);
+
+  useEffect(() => {
     if (activeSection === "radio") {
       updateGradientColors(null, "radio");
     } else if (activeSection === "library" && playlists.length > 0) {
@@ -62,6 +71,7 @@ export default function Home({
       spotify: "https://open.spotify.com/collection/tracks",
     },
   });
+  const [collapseSidebar, setCollapseSidebar] = useState(false);
 
   const handleWheel = (e) => {
     if (!showBrightnessOverlay) {
@@ -167,7 +177,7 @@ export default function Home({
   return (
     <div className="relative min-h-screen">
       {!loading && (
-        <div className="relative z-10 grid grid-cols-[2.2fr_3fr] fadeIn-animation">
+        <div className={`relative z-10 grid ${collapseSidebar ? "grid-cols-[2.2fr_12.1fr]" : "grid-cols-[2.2fr_3fr]"} fadeIn-animation transition-all duration-300 ease-in-out`}>
           <div
             className="h-screen overflow-y-auto pb-12 pl-8 relative scroll-container scroll-smooth"
             style={{ willChange: "transform" }}
@@ -175,6 +185,8 @@ export default function Home({
             <Sidebar
               activeSection={activeSection}
               setActiveSection={setActiveSection}
+              collapseSidebar={collapseSidebar}
+              setCollapseSidebar={setCollapseSidebar}
             />
           </div>
 

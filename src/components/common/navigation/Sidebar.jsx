@@ -8,9 +8,17 @@ import {
   SettingsIcon,
 } from "../../icons";
 
-export default function Sidebar({ activeSection, setActiveSection }) {
+export default function Sidebar({ activeSection, setActiveSection, collapseSidebar, setCollapseSidebar }) {
+  
+
   const handleSectionClick = (section) => {
-    setActiveSection(section);
+    if(section !== "toggle") {
+      setActiveSection(section);
+    } else {
+      const newState = !collapseSidebar;
+      localStorage.setItem("lastCollapsedState", newState);
+      setCollapseSidebar(newState);
+    }
   };
 
   const SidebarItem = ({ section, icon: Icon, label }) => (
@@ -25,7 +33,7 @@ export default function Sidebar({ activeSection, setActiveSection }) {
         />
       )}
       <div className="mr-4 flex-shrink-0">
-        <div className="h-[70px] w-[70px] bg-white/25 rounded-[12px] flex items-center justify-center">
+        <div className="h-[70px] w-[70px] bg-white/25 rounded-[12px] flex items-center justify-center whitespace-nowrap">
           <Icon className="h-10 w-10" />
         </div>
       </div>
@@ -39,16 +47,17 @@ export default function Sidebar({ activeSection, setActiveSection }) {
 
   return (
     <div className="space-y-7 pt-12">
+      <SidebarItem section="toggle" icon={SettingsIcon} label="Collapse" />
       <Link href={`/now-playing`}>
-        <div className="relative flex items-center">
+        <div className="relative flex items-center mt-7">
           <div className="mr-4 flex-shrink-0">
             <div className="h-[70px] w-[70px] bg-white/25 rounded-[12px] flex items-center justify-center">
               <NowPlayingIcon className="h-10 w-10" />
             </div>
           </div>
           <div>
-            <h4 className="ml-1 text-[32px] font-[580] text-white tracking-tight">
-              Now Playing
+            <h4 className="ml-1 text-[32px] font-[580] text-white tracking-tight whitespace-nowrap">
+                Now Playing
             </h4>
           </div>
         </div>
