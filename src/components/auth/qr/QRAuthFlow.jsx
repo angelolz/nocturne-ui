@@ -9,6 +9,7 @@ const QRAuthFlow = ({ onBack, onComplete }) => {
   const [error, setError] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [toggleQrCode, setToggleQrCode] = useState(true);
 
   useEffect(() => {
     const initDevice = async () => {
@@ -82,6 +83,7 @@ const QRAuthFlow = ({ onBack, onComplete }) => {
 
   const handleClose = () => {
     setIsExiting(true);
+    setToggleQrCode(true);
     setTimeout(() => {
       onBack();
     }, 300);
@@ -104,6 +106,11 @@ const QRAuthFlow = ({ onBack, onComplete }) => {
     );
   }
 
+  const handleQrCodeClick = () => {
+    if(process.env.NODE_ENV === 'development') {
+      setToggleQrCode(false);
+    }
+  }
   const modalContent = () => {
     if (isLoading) {
       return (
@@ -125,9 +132,10 @@ const QRAuthFlow = ({ onBack, onComplete }) => {
 
     return (
       <div className="flex flex-col items-center space-y-8">
-        <div className="bg-white p-1 rounded-xl">
-          <QRCodeSVG value={qrUrl} size={200} level="H" includeMargin={true} />
-        </div>
+        
+        {toggleQrCode ? <div className="bg-white p-1 rounded-xl" >
+          <QRCodeSVG value={qrUrl} size={200} level="H" includeMargin={true} onClick={handleQrCodeClick} />
+        </div> : <div><a href={qrUrl} target="_blank"><h4 className="text-white">Link to Authorization URL</h4></a></div>}
         <div className="space-y-2 text-center">
           <p className="text-white text-2xl">Connect to Nocturne</p>
           <p className="text-white/50 text-lg">
