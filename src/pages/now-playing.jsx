@@ -198,7 +198,7 @@ export default function NowPlaying({
     <>
       <div className="flex flex-col gap-1 h-screen w-full z-10 fadeIn-animation">
         <div className="md:w-1/3 flex flex-row items-center px-12 pt-10">
-          <div className={`${showLyrics ? "min-w-[215px]" : "min-w-[280px]"} mr-8`}>
+          <div className={`${showLyrics ? "min-w-[210px]" : "min-w-[280px]"} mr-8`}>
             <div className={`flex flex-column ${centerTrackDisplay ? "justify-center": ""}`}>
             <LongPressLink
               href={
@@ -220,14 +220,14 @@ export default function NowPlaying({
                     ? "Podcast Cover"
                     : "Album Art"
                 }
-                width={showLyrics ? 215 : 280}
-                height={showLyrics ? 215 : 280}
+                width={showLyrics ? 210 : 280}
+                height={showLyrics ? 210 : 280}
                 priority
                 className="aspect-square rounded-[12px] drop-shadow-xl"
               />
             </LongPressLink>
             </div>
-            {showLyrics && <div>
+            {showLyrics && <div className="mt-1">
               <h4 className={`text-[24px] font-[580] text-white tracking-tight whitespace-nowrap truncate ${centerTrackDisplay ? "text-center": ""}`}>{trackName}</h4>
               <h4 className={`text-[18px] font-[580] text-white/60 tracking-tight whitespace-nowrap truncate ${centerTrackDisplay ? "text-center": ""}`}>{artistName}</h4></div>}
           </div>
