@@ -27,7 +27,12 @@ export default function Settings({ onOpenDonationModal }) {
   const [elapsedTimeEnabled, setElapsedTimeEnabled] = useState(() => {
     const storedValue = localStorage.getItem("elapsedTimeEnabled");
     return storedValue !== null ? storedValue === "true" : true;
-  })
+  });
+
+  const [centerTrackDisplay, setCenterTrackDisplay] = useState(() => {
+    const storedValue = localStorage.getItem("centerTrackDisplay");
+    return storedValue !== null ? storedValue === "true" : false;
+  });
 
   useEffect(() => {
     localStorage.setItem(
@@ -49,6 +54,10 @@ export default function Settings({ onOpenDonationModal }) {
   }, [elapsedTimeEnabled]);
 
   useEffect(() => {
+    localStorage.setItem("centerTrackDisplay", centerTrackDisplay.toString());
+  }, [centerTrackDisplay]);
+
+  useEffect(() => {
     if (localStorage.getItem("trackNameScrollingEnabled") === null) {
       localStorage.setItem("trackNameScrollingEnabled", "true");
     }
@@ -60,6 +69,9 @@ export default function Settings({ onOpenDonationModal }) {
     }
     if (localStorage.getItem("elapsedTimeEnabled") === null) {
       localStorage.setItem("elapsedTimeEnabled", "true");
+    }
+    if (localStorage.getItem("centerTrackDisplay") === null) {
+      localStorage.setItem("centerTrackDisplay", "false");
     }
   }, []);
 
@@ -192,6 +204,28 @@ export default function Settings({ onOpenDonationModal }) {
           </Field>
           <p className="pt-4 text-[28px] font-[560] text-white/60 max-w-[380px] tracking-tight">
             Display the elapsed track time or remaining track time below the progress bar.
+          </p>
+        </div>
+        <div>
+          <Field className="flex items-center">
+            <Switch
+              checked={centerTrackDisplay}
+              onChange={setCenterTrackDisplay}
+              className="group relative inline-flex h-11 w-20 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/40"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none inline-block h-10 w-10 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-9"
+              />
+            </Switch>
+            <Label as="span" className="ml-3 text-sm">
+              <span className="text-[32px] font-[580] text-white tracking-tight">
+                Center Track Display
+              </span>
+            </Label>
+          </Field>
+          <p className="pt-4 text-[28px] font-[560] text-white/60 max-w-[380px] tracking-tight">
+            Center aligns the track info instead of being left-aligned.
           </p>
         </div>
         <div className="relative">

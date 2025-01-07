@@ -26,6 +26,7 @@ import { usePlaybackControls } from "@/hooks/usePlaybackControls";
 import { usePlaylistDialog } from "@/hooks/usePlaylistDialog";
 import { useAppState } from "@/hooks/useAppState";
 import { useElapsedTime } from "@/hooks/useElapsedTime";
+import { useCenterTrackDisplay } from "@/hooks/useCenterTrackDisplay";
 
 import {
   HeartIcon,
@@ -120,6 +121,7 @@ export default function NowPlaying({
     useTrackScroll(trackName);
 
   const { elapsedTimeEnabled } = useElapsedTime();
+  const { centerTrackDisplay } = useCenterTrackDisplay();
 
   const artistName = currentPlayback?.item
     ? currentPlayback.item.type === "episode"
@@ -196,7 +198,8 @@ export default function NowPlaying({
     <>
       <div className="flex flex-col gap-1 h-screen w-full z-10 fadeIn-animation">
         <div className="md:w-1/3 flex flex-row items-center px-12 pt-10">
-          <div className="min-w-[280px] mr-8">
+          <div className={`${showLyrics ? "min-w-[215px]" : "min-w-[280px]"} mr-8`}>
+            <div className={`flex flex-column ${centerTrackDisplay ? "justify-center": ""}`}>
             <LongPressLink
               href={
                 currentPlayback?.item?.type === "episode"
@@ -217,12 +220,16 @@ export default function NowPlaying({
                     ? "Podcast Cover"
                     : "Album Art"
                 }
-                width={280}
-                height={280}
+                width={showLyrics ? 215 : 280}
+                height={showLyrics ? 215 : 280}
                 priority
                 className="aspect-square rounded-[12px] drop-shadow-xl"
               />
             </LongPressLink>
+            </div>
+            {showLyrics && <div>
+              <h4 className={`text-[24px] font-[580] text-white tracking-tight whitespace-nowrap truncate ${centerTrackDisplay ? "text-center": ""}`}>{trackName}</h4>
+              <h4 className={`text-[18px] font-[580] text-white/60 tracking-tight whitespace-nowrap truncate ${centerTrackDisplay ? "text-center": ""}`}>{artistName}</h4></div>}
           </div>
 
           {!showLyrics || !currentPlayback?.item ? (
@@ -241,14 +248,14 @@ export default function NowPlaying({
                 accessToken={accessToken}
               >
                 {trackNameScrollingEnabled ? (
-                  <div className="track-name-container">
+                  <div className={`track-name-container ${!(trackNameScrollingEnabled && shouldScroll) && centerTrackDisplay ? "text-center": ""}`}>
                     <h4
                       ref={trackNameRef}
                       key={currentPlayback?.item?.id || "not-playing"}
                       className={`track-name text-[40px] font-[580] text-white tracking-tight whitespace-nowrap ${
                         trackNameScrollingEnabled && shouldScroll
                           ? "animate-scroll"
-                          : ""
+                          : ""}
                       }`}
                     >
                       {trackName}
@@ -273,7 +280,7 @@ export default function NowPlaying({
                 }
                 accessToken={accessToken}
               >
-                <h4 className="text-[36px] font-[560] text-white/60 truncate tracking-tight max-w-[380px]">
+                <h4 className={`text-[36px] font-[560] text-white/60 truncate tracking-tight max-w-[380px] ${centerTrackDisplay ? "text-center": ""}`}>
                   {artistName}
                 </h4>
               </LongPressLink>
@@ -281,7 +288,7 @@ export default function NowPlaying({
           ) : (
             <div className="flex-1 flex flex-col h-[280px]">
               <div
-                className="flex-1 text-left overflow-y-auto h-[280px] w-[380px]"
+                className="flex-1 text-left overflow-y-auto h-[280px] w-[455px]"
                 ref={lyricsContainerRef}
               >
                 {isLoadingLyrics ? (
