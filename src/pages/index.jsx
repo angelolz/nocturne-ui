@@ -239,7 +239,7 @@ export default function Home({
                             </h4>
                           </LongPressLink>
                           {item.type === "show" ? (
-                            <h4 className="text-[32px] font-[560] text-white truncate tracking-tight max-w-[280px]">
+                            <h4 className="text-[28px] font-[560] text-white truncate tracking-tight max-w-[280px]">
                               {item.publisher}
                             </h4>
                           ) : item.artists?.[0] ? (
@@ -250,7 +250,7 @@ export default function Home({
                               }
                               accessToken={accessToken}
                             >
-                              <h4 className="text-[32px] font-[560] text-white truncate tracking-tight max-w-[280px]">
+                              <h4 className="text-[28px] font-[560] text-white truncate tracking-tight max-w-[280px]">
                                 {item.artists
                                   .map((artist) => artist.name)
                                   .join(", ")}
@@ -290,7 +290,7 @@ export default function Home({
                               {likedSongs.name}
                             </h4>
                           </LongPressLink>
-                          <h4 className="text-[28px] font-[560] text-white truncate tracking-tight max-w-[280px] flex items-center">
+                          <h4 className="text-[28px] font-[560] text-white/60 truncate tracking-tight max-w-[280px] flex items-center">
                             {currentPlayback?.context?.uri?.includes(
                               "collection"
                             ) ||
@@ -346,7 +346,7 @@ export default function Home({
                                 {playlist.name}
                               </h4>
                             </LongPressLink>
-                            <h4 className="text-[28px] font-[560] text-white truncate tracking-tight max-w-[280px] flex items-center">
+                            <h4 className="text-[28px] font-[560] text-white/60 truncate tracking-tight max-w-[280px] flex items-center">
                               {currentPlayback &&
                               currentPlayback.context &&
                               currentPlayback.context.uri ===
@@ -403,7 +403,7 @@ export default function Home({
                             {artist.name}
                           </h4>
                         </LongPressLink>
-                        <h4 className="text-[28px] font-[560] text-white truncate tracking-tight max-w-[280px] flex items-center">
+                        <h4 className="text-[28px] font-[560] text-white/60 truncate tracking-tight max-w-[280px] flex items-center">
                           {currentPlayback?.item?.artists?.some(
                             (a) => a.id === artist.id
                           ) ? (
@@ -452,7 +452,7 @@ export default function Home({
                             {mix.name}
                           </h4>
                         </LongPressLink>
-                        <h4 className="text-[28px] font-[560] text-white truncate tracking-tight max-w-[280px] flex items-center">
+                        <h4 className="text-[28px] font-[560] text-white/60 truncate tracking-tight max-w-[280px] flex items-center">
                           {(() => {
                             const playingMixId = localStorage.getItem(
                               `playingMix-${mix.id}`
