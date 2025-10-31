@@ -319,6 +319,11 @@ export function useLyrics(accessToken, currentPlayback) {
   };
 
   useEffect(() => {
+    if (!currentPlayback || currentPlayback?.item?.type === "episode") {
+      setShowLyrics(false);
+      return;
+    }
+
     if (
       showLyrics &&
       currentPlayback?.item &&

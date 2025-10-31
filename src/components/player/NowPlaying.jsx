@@ -695,7 +695,7 @@ export default function NowPlaying({
       <div ref={contentContainerRef}>
         <div className="md:w-1/3 flex flex-row items-center px-12 pt-10">
           <div
-            className={`min-w-[280px] h-[280px] mr-8 ${albumId ? "cursor-pointer" : ""}`}
+            className={`${showLyrics ? "min-w-[220px]" : "min-w-[280px]"} h-[280px] mr-8 ${albumId ? "cursor-pointer" : ""}`}
             onClick={() =>
               albumId &&
               onNavigateToAlbum &&
@@ -709,15 +709,32 @@ export default function NowPlaying({
                   ? "Podcast Cover"
                   : "Album Art"
               }
-              width={280}
-              height={280}
+              width={showLyrics ? 220 : 280}
+              height={showLyrics ? 220 : 280}
               loading="lazy"
               onError={(e) => {
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = "/images/not-playing.webp";
               }}
-              className="w-[280px] h-[280px] object-cover rounded-[12px] drop-shadow-[0_8px_5px_rgba(0,0,0,0.25)]"
+              className={`${showLyrics ? "w-[220px] h-[220px]" : "w-[280px] h-[280px]"} mb-1 object-cover rounded-[12px] drop-shadow-[0_8px_5px_rgba(0,0,0,0.25)]`}
             />
+            {showLyrics && <><ScrollingText
+                  text={trackName}
+                  className="text-[26px] font-[580] text-white tracking-tight"
+                  maxWidth="400px"
+                  pauseDuration={1000}
+                  pixelsPerSecond={40}
+            />
+            <h4
+                className={`text-[22px] font-[560] text-white/60 truncate tracking-tight max-w-[380px] ${firstArtistId ? "cursor-pointer" : ""}`}
+                onClick={() =>
+                  firstArtistId &&
+                  onNavigateToArtist &&
+                  onNavigateToArtist(firstArtistId, "artist")
+                }
+              >
+                {artistName}
+              </h4></>}
           </div>
 
           {!showLyrics ? (
@@ -745,7 +762,7 @@ export default function NowPlaying({
           ) : (
             <div className="flex-1 flex flex-col h-[280px]">
               <div
-                className="flex-1 text-left overflow-y-auto h-[280px] w-[380px] transform-gpu will-change-scroll"
+                className="flex-1 text-left overflow-y-auto h-[280px] w-[450px] transform-gpu will-change-scroll"
                 ref={lyricsContainerRef}
                 style={{
                   scrollBehavior: "smooth",
@@ -991,8 +1008,8 @@ export default function NowPlaying({
             >
               <div className="py-1">
                 {!isPodcast && (
-                  <MenuItem onClick={toggleLyrics}>
-                    <div className="group flex items-center justify-between px-4 py-[16px] text-sm text-white font-[560] tracking-tight focus:outline-none outline-none">
+                  <MenuItem onClick={toggleLyrics} disabled={!currentPlayback}>
+                    <div className={`group flex items-center justify-between px-4 py-[16px] text-sm ${currentPlayback ? "text-white" : "text-white/50"} font-[560] tracking-tight focus:outline-none outline-none`}>
                       <span className="text-[28px]">
                         {showLyrics ? "Hide Lyrics" : "Show Lyrics"}
                       </span>
